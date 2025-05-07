@@ -2,54 +2,85 @@ import { useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../../Constants/api";
 import { useNavigate } from "react-router-dom";
-import registrationValidation from "../../utils/RegistrationValidation";
+import { validateFirstname } from "../../utils/RegistrationValidation";
+import { validateLastname } from "../../utils/RegistrationValidation";
+import { validateEmail } from "../../utils/RegistrationValidation";
+import { validateMobile } from "../../utils/RegistrationValidation";
+import { validatePassword } from "../../utils/RegistrationValidation";
+import { validateConfirmPassword } from "../../utils/RegistrationValidation";
 
 function UserSignup() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [userName, setUsername] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirm] = useState("");
-  const [errormessage, setErrormessage] = useState("");
   const [token, setToken] = useState("");
   const [otp, setOtp] = useState("");
 
+  const [errors, setErrors] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    mobile: "",
+    password: "",
+    confirmPass: "",
+  });
   const navigate = useNavigate();
+
+  const handleFirstname = (e) => {
+    const value = e.target.value;
+    setFirstName(value);
+    setErrors({ ...errors, firstname: validateFirstname(value) });
+  };
+
+  const handleLastname = (e) => {
+    const value = e.target.value;
+    setLastName(value);
+    setErrors({ ...errors, lastname: validateLastname(value) });
+  };
+
+  const handleEmail = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setErrors({ ...errors, username: validateEmail(value) });
+  };
+
+  const handleMobile = (e) => {
+    const value = e.target.value;
+    setMobile(value);
+    setErrors({ ...errors, mobile: validateMobile(value) });
+  };
+
+  const handlePassword = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setErrors({ ...errors, password: validatePassword(value) });
+  };
+
+  const handleConfirmPassword = (e) => {
+    const value = e.target.value;
+    setConfirm(value);
+    setErrors({ ...errors, confirmPass: validateConfirmPassword(value) });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log("Registration begins");
-
-    if (password === confirmPass) {
-      const validationError = registrationValidation(
-        email,
-        userName,
-        password,
-        mobile
-      );
-      if (validationError) {
-        setErrormessage(validationError);
-        return;
-      }
-
-      axios
-        .post(`${API_BASE_URL}/user/signup`, {
-          email: email,
-          name: userName,
-          mobile: mobile,
-          password: password,
-        })
-        .then((response) => {
-          console.log(response.data);
-          setToken(response.data.verificationToken);
-        })
-        .catch((error) => {
-          console.log("Error in getting response:", error);
-        });
-    } else {
-      alert("Passwords do not match");
-    }
+    axios
+      .post(`${API_BASE_URL}/user/signup`, {
+        email: email,
+        name: firstName + " " + lastName,
+        mobile: mobile,
+        password: password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setToken(response.data.verificationToken);
+      })
+      .catch((error) => {
+        console.log("Error in getting response:", error);
+      });
   };
 
   const otpSubmit = (e) => {
@@ -130,114 +161,178 @@ function UserSignup() {
   } else {
     return (
       <>
-        <div className="w-screen h-screen bg-[#ffd700] flex items-center justify-center p-4">
-          <div className="absolute top-[0px] left-[0px] bg-[#ffc700] h-70 w-70 rounded-br-full"></div>
-          <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md z-2">
-            <h2 className="text-2xl font-bold mb-6 text-center text-[#cb202d]">
-              Register Here
-            </h2>
+        <div className="w-screen min-h-screen bg-gradient-to-br from-[#ffde59] via-[#ffd700] to-[#ffc800] flex items-center justify-center p-4">
+          <div className="absolute top-0 left-0 bg-[#ffc700] h-64 w-64 rounded-br-full opacity-80"></div>
+          <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md z-10 backdrop-blur-sm bg-opacity-90">
+            <div className="text-center mb-6">
+              <h2 className="text-3xl font-bold text-[#cb202d] mb-2">
+                Create Account
+              </h2>
+              <p className="text-gray-600">Join our community today</p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="username" className="sr-only">
-                  Username
-                </label>
-                <input
-                  id="username"
-                  type="text"
-                  placeholder="Username"
-                  value={userName}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-                  required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={handleFirstname}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent placeholder-gray-400 transition-all"
+                    required
+                  />
+                  {errors.firstname && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.firstname}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={handleLastname}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent placeholder-gray-400 transition-all"
+                    required
+                  />
+                  {errors.lastname && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.lastname}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="sr-only">
-                  Email
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email Address
                 </label>
                 <input
                   id="email"
-                  type="email"
-                  placeholder="Email"
+                  type="text"
+                  placeholder="your@email.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  onChange={handleEmail}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent placeholder-gray-400 transition-all"
                   required
                 />
+
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="mobile" className="sr-only">
+                <label
+                  htmlFor="mobile"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Mobile Number
                 </label>
                 <input
                   id="mobile"
                   type="tel"
-                  placeholder="Mobile Number"
+                  placeholder="+1 (123) 456-7890"
                   value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  onChange={handleMobile}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent placeholder-gray-400 transition-all"
                   required
                 />
+                {errors.mobile && (
+                  <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="password" className="sr-only">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Password
                 </label>
                 <input
                   id="password"
                   type="password"
-                  placeholder="Password"
+                  placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  onChange={handlePassword}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent placeholder-gray-400 transition-all"
                   required
-                  minLength={6}
+                  minLength={8}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  Minimum 8 characters
+                </p>
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="sr-only">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Confirm Password
                 </label>
                 <input
                   id="confirmPassword"
                   type="password"
-                  placeholder="Confirm Password"
+                  placeholder="••••••••"
                   value={confirmPass}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  onChange={handleConfirmPassword}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent placeholder-gray-400 transition-all"
                   required
-                  minLength={6}
+                  minLength={8}
                 />
+                {errors.confirmPass && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.confirmPass}
+                  </p>
+                )}
               </div>
-
-              {errormessage && (
-                <p className="text-red-600 text-sm text-center">
-                  {errormessage}
-                </p>
-              )}
 
               <button
                 type="submit"
-                className="w-full bg-[#cb202d] font-bold text-white py-2 rounded-lg hover:bg-[#e53e3e] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#cb202d] focus:ring-offset-2"
+                className="w-full bg-gradient-to-r from-[#cb202d] to-[#e53e3e] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-[#cb202d] focus:ring-offset-2 shadow-md"
               >
-                Sign Up
+                Create Account
               </button>
             </form>
 
-            <div className="mt-4 text-center">
-              <a
-                href="/user/login"
-                className="text-sm text-[#cb202d] hover:text-[#e53e3e] transition-colors duration-200 font-medium"
-              >
-                Already a User ? Login
-              </a>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                Already have an account?{" "}
+                <a
+                  href="/user/login"
+                  className="font-medium text-[#cb202d] hover:text-[#e53e3e] transition-colors duration-200"
+                >
+                  Sign in
+                </a>
+              </p>
             </div>
           </div>
-          <div className="absolute bottom-[0px] right-[0px] bg-[#ffc700] h-70 w-70 rounded-tl-full"></div>
+          <div className="absolute bottom-0 right-0 bg-[#ffc700] h-64 w-64 rounded-tl-full opacity-80"></div>
         </div>
       </>
     );

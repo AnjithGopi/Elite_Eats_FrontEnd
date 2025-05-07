@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../../Constants/api";
-import registrationValidation from "../../utils/RegistrationValidation";
+//import registrationValidation from "../../utils/RegistrationValidation";
 
 function RiderSignup() {
   const [email, setEmail] = useState("");
@@ -11,22 +11,22 @@ function RiderSignup() {
   const [confirmPass, setConfirm] = useState("");
   const [token, setToken] = useState("");
   const [otp, setOtp] = useState("");
-  const [errormessage, setErrormessage] = useState("");
+ // const [errormessage, setErrormessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password === confirmPass) {
-      const validationError = registrationValidation(
-        email,
-        userName,
-        password,
-        mobile
-      );
-      if (validationError) {
-        setErrormessage(validationError);
-        return;
-      }
+      // const validationError = registrationValidation(
+      //   email,
+      //   userName,
+      //   password,
+      //   mobile
+      // );
+      // if (validationError) {
+      //   setErrormessage(validationError);
+      //   return;
+      // }
       axios
         .post(`${API_BASE_URL}/rider/signup`, {
           email: email,
@@ -197,9 +197,9 @@ function RiderSignup() {
               />
             </div>
     
-            {errormessage && (
+            {/* {errormessage && (
               <p className="text-red-600 text-sm text-center">{errormessage}</p>
-            )}
+            )} */}
     
             <button
               type="submit"
