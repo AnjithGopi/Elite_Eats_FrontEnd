@@ -11,14 +11,12 @@ function RiderSignup() {
   const [confirmPass, setConfirm] = useState("");
   const [token, setToken] = useState("");
   const [otp, setOtp] = useState("");
-
-  const [errormessage,setErrormessage]=useState("")
+  const [errormessage, setErrormessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password === confirmPass) {
-
       const validationError = registrationValidation(
         email,
         userName,
@@ -27,7 +25,7 @@ function RiderSignup() {
       );
       if (validationError) {
         setErrormessage(validationError);
-        return
+        return;
       }
       axios
         .post(`${API_BASE_URL}/rider/signup`, {
@@ -43,8 +41,8 @@ function RiderSignup() {
         .catch((error) => {
           console.log("Error in getting response:", error);
         });
-    }else{
-      alert("Passwords do not match")
+    } else {
+      alert("Passwords do not match");
     }
   };
 
@@ -125,72 +123,103 @@ function RiderSignup() {
     );
   } else {
     return (
-      <div className="w-screen h-screen bg-[#ffd700] flex items-center justify-center">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-80">
+      <>
+      <div className="w-screen h-screen bg-[#ffd700] flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center text-[#cb202d]">
             Register Here
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Username"
-              value={userName}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
-
-            <input
-              type="tel"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
-
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPass}
-              onChange={(e) => setConfirm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
-              {errormessage && (
-            <p className="text-red-600 text-sm text-center">{errormessage}</p>
-          )}
-
-
+            <div>
+              <label htmlFor="username" className="sr-only">Username</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Username"
+                value={userName}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                required
+              />
+            </div>
+    
+            <div>
+              <label htmlFor="email" className="sr-only">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                required
+              />
+            </div>
+    
+            <div>
+              <label htmlFor="mobile" className="sr-only">Mobile Number</label>
+              <input
+                id="mobile"
+                type="tel"
+                placeholder="Mobile Number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                required
+              />
+            </div>
+    
+            <div>
+              <label htmlFor="password" className="sr-only">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                required
+                minLength={6}
+              />
+            </div>
+    
+            <div>
+              <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPass}
+                onChange={(e) => setConfirm(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                required
+                minLength={6}
+              />
+            </div>
+    
+            {errormessage && (
+              <p className="text-red-600 text-sm text-center">{errormessage}</p>
+            )}
+    
             <button
               type="submit"
-              className="w-full bg-[#cb202d] font-bold text-white py-2 rounded-lg hover:bg-[#e53e3e] transition cursor-pointer"
+              className="w-full bg-[#cb202d] font-bold text-white py-2 rounded-lg hover:bg-[#e53e3e] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#cb202d] focus:ring-offset-2"
             >
-              Signup
+              Sign Up
             </button>
           </form>
-
-          <a
-            href="/rider/login"
-            className="ml-9 login-navigate text-xs text-[#cb202d] "
-          >
-            Already a Deliverypartner? login
-          </a>
+    
+          <div className="mt-4 text-center">
+            <a
+              href="/rider/login"
+              className="text-sm text-[#cb202d] hover:text-[#e53e3e] transition-colors duration-200 font-medium"
+            >
+              Already a Delivery Partner? Login
+            </a>
+          </div>
         </div>
       </div>
+    </>
     );
   }
 }

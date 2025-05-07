@@ -30,7 +30,7 @@ function UserSignup() {
       );
       if (validationError) {
         setErrormessage(validationError);
-        return
+        return;
       }
 
       axios
@@ -129,72 +129,117 @@ function UserSignup() {
     );
   } else {
     return (
-      <div className="w-screen h-screen bg-[#ffd700] flex items-center justify-center">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-80">
-          <h2 className="text-2xl font-bold mb-6 text-center text-[#cb202d]">
-            Register Here
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Username"
-              value={userName}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
+      <>
+        <div className="w-screen h-screen bg-[#ffd700] flex items-center justify-center p-4">
+          <div className="absolute top-[0px] left-[0px] bg-[#ffc700] h-70 w-70 rounded-br-full"></div>
+          <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md z-2">
+            <h2 className="text-2xl font-bold mb-6 text-center text-[#cb202d]">
+              Register Here
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="username" className="sr-only">
+                  Username
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="Username"
+                  value={userName}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  required
+                />
+              </div>
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
+              <div>
+                <label htmlFor="email" className="sr-only">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  required
+                />
+              </div>
 
-            <input
-              type="tel"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
+              <div>
+                <label htmlFor="mobile" className="sr-only">
+                  Mobile Number
+                </label>
+                <input
+                  id="mobile"
+                  type="tel"
+                  placeholder="Mobile Number"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  required
+                />
+              </div>
 
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
+              <div>
+                <label htmlFor="password" className="sr-only">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  required
+                  minLength={6}
+                />
+              </div>
 
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPass}
-              onChange={(e) => setConfirm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
-            />
+              <div>
+                <label htmlFor="confirmPassword" className="sr-only">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPass}
+                  onChange={(e) => setConfirm(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-400"
+                  required
+                  minLength={6}
+                />
+              </div>
 
-            {errormessage && (
-              <p className="text-red-600 text-sm text-center">{errormessage}</p>
-            )}
+              {errormessage && (
+                <p className="text-red-600 text-sm text-center">
+                  {errormessage}
+                </p>
+              )}
 
-            <button
-              type="submit"
-              className="w-full bg-[#cb202d] font-bold text-white py-2 rounded-lg hover:bg-[#e53e3e] transition cursor-pointer"
-            >
-              Signup
-            </button>
-          </form>
+              <button
+                type="submit"
+                className="w-full bg-[#cb202d] font-bold text-white py-2 rounded-lg hover:bg-[#e53e3e] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#cb202d] focus:ring-offset-2"
+              >
+                Sign Up
+              </button>
+            </form>
 
-          <a
-            href="/user/login"
-            className="ml-15 login-navigate text-xs text-[#cb202d] "
-          >
-            Already a user? login
-          </a>
+            <div className="mt-4 text-center">
+              <a
+                href="/user/login"
+                className="text-sm text-[#cb202d] hover:text-[#e53e3e] transition-colors duration-200 font-medium"
+              >
+                Already a User ? Login
+              </a>
+            </div>
+          </div>
+          <div className="absolute bottom-[0px] right-[0px] bg-[#ffc700] h-70 w-70 rounded-tl-full"></div>
         </div>
-      </div>
+      </>
     );
   }
 }
