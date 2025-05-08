@@ -62,7 +62,7 @@ function UserSignup() {
   const handleConfirmPassword = (e) => {
     const value = e.target.value;
     setConfirm(value);
-    setErrors({ ...errors, confirmPass: validateConfirmPassword(value) });
+    setErrors({ ...errors, confirmPass: validateConfirmPassword(password,value) });
   };
 
   const handleSubmit = (e) => {

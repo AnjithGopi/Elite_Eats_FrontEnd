@@ -3,7 +3,7 @@ export const validateFirstname = (firstname) => {
     return "First name required";
   }
 
-  if (firstname.split()[0].toLowerCase === firstname.spilt()[0]) {
+  if (firstname.split()[0].toLowerCase() === firstname.split()[0]) {
     return "First name should start with UpperCase";
   }
 
@@ -18,7 +18,7 @@ export const validateLastname = (lastname) => {
     return "Last name required";
   }
 
-  if (lastname[0].toLowerCase === lastname[0]) {
+  if (lastname[0].toLowerCase() === lastname[0]) {
     return "Last name should start with UpperCase";
   }
 
