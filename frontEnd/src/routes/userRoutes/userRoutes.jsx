@@ -10,7 +10,7 @@ const userRoutes=[
     {path:"/user/login",element:<UserLogin/>},
     {path:"/user/home",element:<Home/>},
     {path:"/user/forgot_password",element:<ForgotPassword/>},
-    {path:"/user/new_password",element:<NewPassword/>}
+    {path:"/user/reset-password/:token",element:<NewPassword/>}
 ]
 
 

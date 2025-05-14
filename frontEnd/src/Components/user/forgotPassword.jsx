@@ -1,6 +1,8 @@
 import { useState } from "react";
 import NewPassword from "./Newpassword";
 import { validateEmail } from "../../utils/RegistrationValidation";
+import axios from "axios"
+import { API_BASE_URL } from "../../Constants/api";
 function ForgotPassword() {
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState("");
@@ -14,7 +16,19 @@ function ForgotPassword() {
     setErrors({ ...errors, email: validateEmail(value) });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios.post(`${API_BASE_URL}/user/forgot_password`,{
+
+      email:email
+    })
+    .then((response)=>{
+      console.log(response.data)
+      alert(response.data.user.message)
+    })
+
+
     setSubmitted(true);
   };
 
@@ -51,13 +65,11 @@ function ForgotPassword() {
               />
             </div>
 
-            {/* {errorMessage && (
-        <p className="text-red-500 text-sm text-center py-2">{errorMessage}</p>
-      )} */}
-
-            {/* {successMessage && (
-        <p className="text-green-600 text-sm text-center py-2">{successMessage}</p>
-      )} */}
+            {errors.email && (
+              <p className="text-red-500 text-sm text-center py-2">
+                {errors.email}
+              </p>
+            )}
 
             <button
               type="submit"

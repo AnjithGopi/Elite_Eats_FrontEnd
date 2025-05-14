@@ -3,6 +3,9 @@ import {
   validateConfirmPassword,
   validatePassword,
 } from "../../utils/RegistrationValidation";
+import { useParams } from "react-router-dom";
+
+import { API_BASE_URL } from "../../Constants/api";
 
 function NewPassword() {
   const [password, setPassword] = useState("");
@@ -11,6 +14,9 @@ function NewPassword() {
     password: "",
     confirmPass: "",
   });
+  const { token } = useParams();
+
+  console.log(token);
 
   const handlePassword = (e) => {
     const value = e.target.value;
@@ -89,7 +95,7 @@ function NewPassword() {
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-[#cb202d] to-[#e53e3e] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-[#cb202d] focus:ring-offset-2 shadow-md"
+            className="w-full bg-gradient-to-r from-[#cb202d] to-[#e53e3e] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-[#cb202d] focus:ring-offset-2 shadow-md cursor-pointer"
           >
             Reset Password
           </button>
@@ -99,7 +105,7 @@ function NewPassword() {
           <p className="text-sm text-gray-600">
             Need to start over?{" "}
             <a
-              href="/user/forgot-password"
+              href="/user/forgot_password"
               className="font-medium text-[#cb202d] hover:text-[#e53e3e] transition-colors duration-200"
             >
               Request new link
